@@ -90,7 +90,7 @@ function User() {
   }, [userMessages,tempVariable]);
 
   useEffect(() => {
-    setSocket(io("http://localhost:8080",{
+    setSocket(io(window.location.origin,{
       transports: ["websocket", "polling"],
       withCredentials: true,
     }));

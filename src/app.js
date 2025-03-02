@@ -1,14 +1,23 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import {Socket} from "socket.io"
-import {io} from "./socket.js"
+
 import {User} from "./models/user.model.js"
 import path from "path";
 import {fileURLToPath} from "url"
+import http from "http";
+import { Server } from "socket.io";
 
 const __filename=fileURLToPath(import.meta.url);
 const __dirname=path.dirname(__filename)
+const app=express()
+const server=http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: process.env.CORS_ORIGIN,
+        methods: ["GET", "POST"],
+      },
+});
 
 let users=[];
 io.on('connection',socket=>{
@@ -117,7 +126,7 @@ io.on('connection',socket=>{
 })
 
 
-const app=express() 
+
 
 app.use(cors({
     origin:process.env.CORS_ORIGIN,
