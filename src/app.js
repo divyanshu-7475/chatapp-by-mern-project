@@ -150,7 +150,9 @@ app.use("/api/v1/users",userRouter)
 app.use("/api/v1/chat",chatRouter)
 app.use("/api/v1/message",messageRouter)
 app.use("/api/v1/email",emailRouter)
-
+app.get("/health", (req, res) => {
+    res.status(200).send("Server is running");
+});
 const frontendPath = path.resolve(__dirname, "../frontend/build"); // Move one level up
 app.use(express.static(frontendPath));
 
