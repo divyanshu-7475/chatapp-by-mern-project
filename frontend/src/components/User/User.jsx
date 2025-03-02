@@ -93,6 +93,8 @@ function User() {
     setSocket(io(window.location.origin,{
       transports: ["websocket", "polling"],
       withCredentials: true,
+      secure: true,
+      reconnection: true,
     }));
   }, []);
 

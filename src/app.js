@@ -16,11 +16,13 @@ const io = new Server(server, {
     cors: {
         origin: process.env.CORS_ORIGIN,
         methods: ["GET", "POST"],
+        credentials: true,
       },
 });
 
 let users=[];
 io.on('connection',socket=>{
+    console.log(`user ${socket.id}`)
     socket.on('addUser',userId=>{
         const isUserExist=users.find(user=>user.userId===userId)
 
@@ -158,4 +160,4 @@ app.get('*', (req, res) => {
 
 
 
-export {app}
+export {app,server}
