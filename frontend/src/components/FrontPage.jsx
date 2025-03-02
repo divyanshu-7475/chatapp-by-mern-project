@@ -22,7 +22,7 @@ function MainPage(){
     const [mode,setMode]=useState("login")
     const refreshToken=localStorage.getItem('refreshToken') || ''
     if(refreshToken!==''){
-        axios.get(`http://localhost:8000/api/v1/users/current/${refreshToken}`)
+        axios.get(`${window.location.origin}/api/v1/users/current/${refreshToken}`)
         .then((response)=>{
             const user=response.data.data
             dispatch(loginUser(user))
@@ -43,7 +43,7 @@ function MainPage(){
     const Login=async(e)=>{
         e.preventDefault()
 
-        axios.post(`http://localhost:8000/api/v1/users/login`,{
+        axios.post(`${window.location.origin}/api/v1/users/login`,{
                 username:'',
                 email:userName,
                 password:password

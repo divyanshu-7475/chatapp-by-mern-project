@@ -58,7 +58,7 @@ function User() {
     const fetchConversations = () => {
       axios
         .get(
-          `http://localhost:8000/api/v1/chat/fetchconversation/${loggedInUser?._id}`
+          `${window.location.origin}/api/v1/chat/fetchconversation/${loggedInUser?._id}`
         )
         .then((response) => {
           setConversations(response.data.data);
@@ -155,7 +155,7 @@ function User() {
       setUserMessages([]);
     } else {
       axios
-        .get(`http://localhost:8000/api/v1/message/${conversationId}`)
+        .get(`${window.location.origin}/api/v1/message/${conversationId}`)
         .then((response) => {
           //console.log("mssg res",response.data.data)
           setUserMessages(response.data.data);
@@ -179,7 +179,7 @@ function User() {
         });
     }
     axios
-      .post(`http://localhost:8000/api/v1/message`, {
+      .post(`${window.location.origin}/api/v1/message`, {
         conversationId: tempId,
         senderId: loggedInUser?._id,
         message: typedMessage,
