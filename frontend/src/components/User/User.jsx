@@ -58,7 +58,7 @@ function User() {
     const fetchConversations = () => {
       axios
         .get(
-          `${window.location.origin}/api/v1/chat/fetchconversation/${loggedInUser?._id}`
+          `http://localhost:8000/api/v1/chat/fetchconversation/${loggedInUser?._id}`
         )
         .then((response) => {
           setConversations(response.data.data);
@@ -90,7 +90,10 @@ function User() {
   }, [userMessages,tempVariable]);
 
   useEffect(() => {
-    setSocket(io("http://localhost:8080"));
+    setSocket(io("http://localhost:8080",{
+      transports: ["websocket", "polling"],
+      withCredentials: true,
+    }));
   }, []);
 
   useEffect(() => {
@@ -152,7 +155,7 @@ function User() {
       setUserMessages([]);
     } else {
       axios
-        .get(`${window.location.origin}/api/v1/message/${conversationId}`)
+        .get(`http://localhost:8000/api/v1/message/${conversationId}`)
         .then((response) => {
           //console.log("mssg res",response.data.data)
           setUserMessages(response.data.data);
@@ -176,7 +179,7 @@ function User() {
         });
     }
     axios
-      .post(`${window.location.origin}/api/v1/message`, {
+      .post(`http://localhost:8000/api/v1/message`, {
         conversationId: tempId,
         senderId: loggedInUser?._id,
         message: typedMessage,
@@ -428,7 +431,7 @@ function User() {
                         className={` ${isClickedDelete ? " opacity-15 " : ""}`}
                       >
                         <div
-                          className={`mb-1 ${message.length<20?"w-[25%]":""} max-w-[45%]  rounded-b-xl p-4 flex ${
+                          className={`mb-1 ${message.length<20?"sm:w-[25%] w-2/5":""} sm:max-w-[45%] break-words max-w-[70%] rounded-b-xl p-4 flex ${
                             senderId === loggedInUser._id
                               ? " bg-blue-500 rounded-tl-xl ml-auto text-white"
                               : "bg-white text-black rounded-tr-xl ml-2"
@@ -561,7 +564,7 @@ function User() {
                     setTypedMessage(e.target.value);
                   }}
                   type="text"
-                  className=" w-4/5 h-4/5 m-1 ml-5 p-1 pl-5 font-medium outline-none bg-[#242424]	"
+                  className=" w-4/5 h-4/5 m-1 ml-5 p-1 pl-5 font-medium outline-none sm:bg-[#242424] bg-slate-300 sm:text-white text-black	"
                   placeholder="type message here"
                 />
                 <div className="mt-3 cursor-pointer " onClick={sendMessage}>
