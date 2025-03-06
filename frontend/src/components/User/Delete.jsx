@@ -36,7 +36,7 @@ const Delete=({name})=>{
         <div
                   className={`w-full  flex justify-center items-center relative -top-20`}
                 >
-                  <div className="w-2/5 h-36 border rounded-xl">
+                  <div className="w-[90%] sm:w-2/5 h-36 border rounded-xl">
                     <div className="w-full h-1/2 bg-gray-500 rounded-t-xl font-semibold text-xl flex items-center justify-center">
                       {name} chat?
                     </div>

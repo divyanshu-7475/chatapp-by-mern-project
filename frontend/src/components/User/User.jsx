@@ -424,7 +424,32 @@ function User() {
                   </svg>
                 </div>
               </div>
-              <div className={`w-full h-4/5 overflow-scroll scrollbar-hide`}>
+              {isClickedDelete && <div
+                  className={`sm:w-[76.5%] w-[68.5%] h-[75%]  flex justify-center items-center  absolute  `}
+                >
+                  <div className="sm:w-2/5 w-4/5 h-36 border rounded-xl">
+                    <div className="w-full h-1/2 bg-gray-500 rounded-t-xl font-semibold sm:text-xl text-lg flex items-center justify-center">
+                      Delete Message?
+                    </div>
+                    <div className="w-full h-1/2 flex items-center bg-gray-700 rounded-b-xl ">
+                      <div
+                        className="w-2/5 h-3/5 border text-lg flex justify-center rounded-xl m-2 pt-1 ml-6 cursor-pointer bg-red-500"
+                        onClick={deleteMessage}
+                      >
+                        Delete
+                      </div>
+                      <div
+                        className="w-2/5 h-3/5 border text-lg flex justify-center rounded-xl m-2 pt-1 cursor-pointer bg-gray-500"
+                        onClick={() => {
+                          setIsClickedDelete(false);
+                        }}
+                      >
+                        Cancel
+                      </div>
+                    </div>
+                  </div>
+                </div>}
+              <div className={`w-full  h-4/5 overflow-scroll scrollbar-hide`}>
                 {userMessages.length > 0 ? (
                   userMessages.map(({ id, senderId, sender, message,messageType }) => {
                     if (messageType==="text") {
@@ -526,35 +551,10 @@ function User() {
                 ) : (
                   <div></div>
                 )}
-                <div
-                  className={`w-full flex justify-center items-center relative -top-44 ${
-                    !isClickedDelete ? " invisible" : ""
-                  }`}
-                >
-                  <div className="w-2/5 h-36 border rounded-xl">
-                    <div className="w-full h-1/2 bg-gray-500 rounded-t-xl font-semibold text-xl flex items-center justify-center">
-                      Delete Message?
-                    </div>
-                    <div className="w-full h-1/2 flex items-center bg-gray-700 rounded-b-xl ">
-                      <div
-                        className="w-2/5 h-3/5 border text-lg flex justify-center rounded-xl m-2 pt-1 ml-6 cursor-pointer bg-red-500"
-                        onClick={deleteMessage}
-                      >
-                        Delete
-                      </div>
-                      <div
-                        className="w-2/5 h-3/5 border text-lg flex justify-center rounded-xl m-2 pt-1 cursor-pointer bg-gray-500"
-                        onClick={() => {
-                          setIsClickedDelete(false);
-                        }}
-                      >
-                        Cancel
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                
                 {openModal && <Modal closeModal={closeModal} socket={socket} useFor={"send"} /> }
               </div>
+              
               <div
                 className={`w-full h-14 mt-1 border border-solid rounded-3xl flex ${
                   isClickedDelete ? " opacity-15 " : ""
