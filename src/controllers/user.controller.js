@@ -45,23 +45,12 @@ const registerUser=asyncHandler(async (req,res)=>{
     if (verification?.code!==code) {
         throw new ApiError(400,"verification code does not matched")
     } 
-    let dpPath= 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
-    if (req.file) {
-        const dpLocalPath=req.files?.dp[0]?.path
-        
-        if (dpLocalPath) {
-            const dp=await uploadOnCloudinary(dpLocalPath)
-            dpPath=dp.url
-            if (!dpPath) {
-                throw new ApiError(500,"something went wrong while uploading dp")
-            }
-        }
-    }
+    
 
     const user=await User.create({
         fullname,
         username: username.toLowerCase(),
-        dp: dpPath,
+        dp: "https://res.cloudinary.com/dxr8h1oud/image/upload/v1741409731/pqbbo5bp72sytchlhiy1.png",
         email,
         password
     })
@@ -251,7 +240,7 @@ const dpUpdate= asyncHandler(async(req,res)=>{
     if (!user) {
         throw new ApiError(404,"user not found")
     }
-    const commonDp="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+    const commonDp="https://res.cloudinary.com/dxr8h1oud/image/upload/v1741409731/pqbbo5bp72sytchlhiy1.png"
 
     if (user?.dp!==commonDp) {
         const parts = user?.dp.split("/");
@@ -274,6 +263,23 @@ const dpUpdate= asyncHandler(async(req,res)=>{
         .json(new ApiResponse(200,updatedUser,"dp updated"))
 })
 
+const removeDp=asyncHandler(async(req,res)=>{
+    const {userId}=req.body
+    const user=await User.findById(userId)
+    if (!user) {
+        throw new ApiError(404,"user not found")
+    }
+    const dp="https://res.cloudinary.com/dxr8h1oud/image/upload/v1741409731/pqbbo5bp72sytchlhiy1.png"
+    const updatedUser=await User.findByIdAndUpdate(userId,{dp:dp},{new: true}).select("-password")
+    if (!updatedUser) {
+        throw new ApiError(500, "something went wrong while removing dp, try again")
+    }
+    return res.status(200)
+    .json(new ApiResponse(200,updatedUser,"dp removed successfully"))
+
+    
+})
+
 const allUsers=asyncHandler(async(req,res)=>{
     const keyword= req.query.search? {
         $or: [
@@ -290,4 +296,4 @@ const allUsers=asyncHandler(async(req,res)=>{
 
 export {registerUser,loginUser,
     refreshAccessToken,changeCurrentPassword, getCurrentUser,
-    updatedFullname,updatedEmail,dpUpdate,allUsers,resetPassword}
+    updatedFullname,updatedEmail,dpUpdate,allUsers,resetPassword,removeDp}

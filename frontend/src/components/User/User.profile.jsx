@@ -4,6 +4,7 @@ import {useSelector} from "react-redux"
 import {useNavigate} from "react-router-dom"
 import Modal from '../Modal/Modal.jsx'
 import ModalSmallScreen from '../Modal/Modal.smallScreen.jsx'
+import {Delete} from "./Delete.jsx"
 
 export default function UserProfile() {
     
@@ -17,6 +18,8 @@ export default function UserProfile() {
     const [openModal,setOpenModal]=useState(false)
     const [dpView,setDpView]=useState(false)
     const [changePasswaord,setChangePasswaord]=useState(false)
+    const [isRemove,setIsRemove]=useState(false)
+    const [dpOption,setDpOption]=useState(false)
     const editFunction=(value)=>{
         setEdit(true)
         setPassValue(value)
@@ -25,6 +28,16 @@ export default function UserProfile() {
         setOpenModal(false)
         setDpView(false)
         setChangePasswaord(false)
+        setDpOption(false)
+    }
+    const editClick=()=>{
+        setTimeout(()=>{
+            setDpOption(!dpOption)
+        },500)
+    }
+    const removeFunc=()=>{
+        setIsRemove(false)
+        setDpOption(false)
     }
 
   return (
@@ -62,7 +75,7 @@ export default function UserProfile() {
             <div className='w-full flex justify-center mt-4 -ml-8'>
                 <img src={dp} className='sm:w-40 sm:h-40 w-28 h-28 rounded-full cursor-pointer' onClick={()=>{setDpView(true)}} />
                 <div className='border sm:w-12 sm:h-12 w-9 h-9 p-1 pl-1.5 bg-green-800 rounded-full cursor-pointer relative sm:top-28 sm:-left-14 top-20 -left-9'
-                onClick={()=>{setOpenModal(true)}}
+                onClick={editClick}
                 >
                 <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  
                 fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  
@@ -71,10 +84,22 @@ export default function UserProfile() {
                 -4 -4l-10.5 10.5v4" /><path d="M13.5 6.5l4 4" />
                 </svg>
                 </div>
+               
                 {openModal && <Modal closeModal={closeModal} useFor={"dp"} />}
                 {dpView && <Modal closeModal={closeModal} image={{message:dp}}/>}
+                
             </div>
-            <div className='w-full mt-5'>
+            {dpOption && <div className='w-full mt-1 h-20  flex justify-center relative -left-2'>
+                <div className='sm:w-[15%] w-[30%] h-[90%]  '>
+                <div className='w-full h-1/2 flex justify-center items-center hover:bg-gray-600 rounded-t-lg border  '
+                onClick={()=>{setOpenModal(true)}}>Change</div>
+                <div className='w-full h-1/2 flex justify-center items-center hover:bg-gray-600 rounded-b-lg border  '
+                onClick={()=>{setIsRemove(true)}}>Remove</div>
+
+                </div>
+            </div> }
+            {isRemove && <Delete func={removeFunc} name={"remove"}/>}
+            <div className={`w-full mt-5 relative ${isRemove?"-top-24":""}`}>
                 <div className='w-full flex justify-center'>
                     <span className='w-[90%] opacity-70'>Name</span>
                 </div>
@@ -90,8 +115,8 @@ export default function UserProfile() {
                     </div>
                     </div>
             </div>
-            <div className='w-full flex justify-center relative -left-10'><hr className='sm:w-[80%] w-[60%] opacity-10' /></div>
-            <div className='w-full mt-5'>
+            <div className={`w-full flex justify-center relative -left-10 ${isRemove?"-top-24":""}`}><hr className='sm:w-[80%] w-[60%] opacity-10' /></div>
+            <div className={`w-full mt-5 relative ${isRemove?"-top-24":""}`}>
                 <div className='w-full flex justify-center'>
                     <span className='w-[90%] opacity-70'>Username</span>
                 </div>
@@ -99,8 +124,8 @@ export default function UserProfile() {
                     <div className='sm:w-[85.5%] w-[89%] text-2xl '>{user?.username}</div>
                     </div>
             </div>
-            <div className='flex justify-center relative -left-10'><hr className='sm:w-[80%] w-[60%] opacity-10' /></div>
-            <div className='w-full mt-5'>
+            <div className={`w-full flex justify-center relative -left-10 ${isRemove?"-top-24":""}`}><hr className='sm:w-[80%] w-[60%] opacity-10' /></div>
+            <div className={`w-full mt-5 relative ${isRemove?"-top-24":""}`}>
                 <div className='w-full flex justify-center'>
                     <span className='w-[90%] opacity-70'>Email</span>
                 </div>
@@ -116,9 +141,9 @@ export default function UserProfile() {
                     </div>
                     </div>
             </div>
-            <div className='flex justify-center relative -left-10 '><hr className='w-[60%] sm:w-[80%] opacity-10' /></div>
+            <div className={`w-full flex justify-center relative -left-10 ${isRemove?"-top-24":""}`}><hr className='w-[60%] sm:w-[80%] opacity-10' /></div>
         </div>
-        <div className='w-full flex justify-center mt-8 ml-2'>
+        <div className={`w-full flex justify-center mt-8 ml-2 relative ${isRemove?"-top-24":""}`}>
             <div className='w-3/5'>
             <div 
             className='w-40 h-10 flex justify-center rounded-3xl cursor-pointer bg-green-500 items-center border text-black'
